@@ -8,7 +8,6 @@ Built as a portfolio-grade demonstration of the **full ML engineering lifecycle*
 
 ## Table of Contents
 
-- [Project Status](#project-status)
 - [Why This Project Exists](#why-this-project-exists)
 - [Datasets](#datasets)
 - [Architecture](#architecture)
@@ -22,11 +21,8 @@ Built as a portfolio-grade demonstration of the **full ML engineering lifecycle*
 - [Database](#database)
 - [Dashboard](#dashboard)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Testing](#testing)
 - [Project Structure](#project-structure)
-- [Key Design Decisions](#key-design-decisions--interview-talking-points)
-- [Roadmap](#roadmap)
 
 ---
 

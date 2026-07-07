@@ -30,26 +30,6 @@ Built as a portfolio-grade demonstration of the **full ML engineering lifecycle*
 
 ---
 
-## Project Status
-
-| Phase | Description | Status |
-|---|---|---|
-| 1 | Project setup, architecture, data acquisition | ✅ Complete |
-| 2 | Data preprocessing (cleaning, encoding, dedup) | ✅ Complete |
-| 3 | Feature engineering (7 core features, both datasets) | ✅ Complete |
-| 4 | Machine learning (risk classification, grade regression, segmentation) | ✅ Complete |
-| 5 | Explainable AI (SHAP) | 🚧 In progress |
-| 6 | Recommendation engine | ⏳ Planned |
-| 7 | Backend API (FastAPI) | ⏳ Planned |
-| 8 | Database (SQLite/PostgreSQL schema) | ⏳ Planned |
-| 9 | Dashboard (Streamlit) | ⏳ Planned |
-| 10 | Full documentation (diagrams, manuals) | ⏳ Planned |
-| 11 | GitHub packaging | ⏳ Planned |
-
-This README documents the **complete intended feature set**, including phases not yet implemented, so the eventual build has a single source of truth to build against and nothing gets dropped along the way. Sections for unbuilt phases describe the intended design; they will be updated with real results (like the ✅ sections already are) as each phase lands.
-
----
-
 ## Why This Project Exists
 
 Most student-performance-prediction projects on GitHub use a single small dataset (usually just the UCI Student Performance dataset) and stop at a single classifier with an accuracy score. EduRadar is deliberately broader:
@@ -138,27 +118,27 @@ Raw Data (OULAD + UCI)
 
 ## Feature Catalogue (Full Lifecycle)
 
-### Data Processing ✅
+### Data Processing 
 - Missing value handling (documented per-column strategy — never blanket mean/mode imputation)
 - Duplicate removal (caught 787,170 duplicate clickstream rows in OULAD)
 - Categorical encoding (ordinal domain-knowledge maps + one-hot for nominal fields)
 - Class imbalance handling via SMOTE (applied leakage-safely, inside a pipeline fit only on training folds)
 - Reusable, testable preprocessing pipelines (`BaseCleaner` abstract class, Template Method pattern)
 
-### Feature Engineering ✅
+### Feature Engineering 
 7 named features built per-dataset (see [Engineered Features](#engineered-features) below), each with an explicit "direct measurement" or "proxy" classification.
 
-### Machine Learning ✅
+### Machine Learning 
 Three supervised/unsupervised modules (see [Machine Learning Modules](#machine-learning-modules) below), each using the dataset whose real target fits the task.
 
-### Explainable AI 🚧
+### Explainable AI 
 - Global feature importance (SHAP summary plot, per risk class)
 - Local, per-student explanation (top contributing features, signed direction)
 - Waterfall plot per student
 - Force plot per student
 - Plain-English translation of SHAP output for non-technical advisors
 
-### Recommendation Engine ⏳
+### Recommendation Engine 
 Rule-based, dynamically generated interventions mapped from feature thresholds, e.g.:
 - Low attendance consistency → recommend mentor meeting
 - Low LMS/engagement activity → recommend a daily structured learning schedule
@@ -167,7 +147,7 @@ Rule-based, dynamically generated interventions mapped from feature thresholds, 
 
 Recommendations will be generated per-student from the same feature table used for prediction, and will cite which feature(s) triggered which recommendation (so it's explainable, not a black box).
 
-### Backend API ⏳
+### Backend API 
 FastAPI endpoints (planned contracts, finalized during Phase 7):
 
 | Method | Endpoint | Description |
@@ -179,14 +159,14 @@ FastAPI endpoints (planned contracts, finalized during Phase 7):
 | GET | `/explain/{id}` | SHAP explanation, plain-English + structured |
 | GET | `/recommendation/{id}` | Personalized intervention list |
 
-### Database ⏳
+### Database 
 Planned schema (SQLite for local dev, PostgreSQL-ready via SQLAlchemy):
 - `students` — demographic + engineered feature snapshot
 - `predictions` — risk/grade/cluster predictions with timestamps and model version
 - `shap_explanations` — stored per-student SHAP contributions
 - `recommendations` — generated interventions, linked to the feature(s) that triggered them
 
-### Dashboard ⏳
+### Dashboard 
 Streamlit multi-page app:
 - **Home** — project overview, key stats
 - **Dataset Analytics** — distributions, correlations, class balance
@@ -197,12 +177,12 @@ Streamlit multi-page app:
 - **Recommendations** — intervention list per student/segment
 - **Admin Panel** — model metrics, retraining trigger, data refresh status
 
-### Documentation ⏳
+### Documentation 
 - Installation guide, user manual, API documentation (this README + `docs/`)
 - Architecture diagram, ER diagram, flowchart (`docs/diagrams/`)
 
-### GitHub Packaging ⏳
-- `.gitignore` ✅, `requirements.txt` ✅ (both already in place from Phase 1)
+### GitHub Packaging 
+- `.gitignore` , `requirements.txt` 
 - Clean, phase-based commit history
 - This README as the top-level project entry point
 
@@ -226,7 +206,7 @@ Streamlit multi-page app:
 
 ## Machine Learning Modules
 
-### Module 1 — Academic Risk Prediction (OULAD) ✅
+### Module 1 — Academic Risk Prediction (OULAD) 
 3-class classification: Low / Medium / High risk, mapped from `final_result` (Withdrawn→High, Fail→Medium, Pass/Distinction→Low).
 
 | Model | Accuracy | F1 (macro) | ROC-AUC (OvR) |
@@ -237,7 +217,7 @@ Streamlit multi-page app:
 
 SMOTE applied inside an `imblearn.Pipeline`, fit only on the training fold, to address class imbalance (47% Low / 31% High / 22% Medium) without leaking test-set information.
 
-### Module 2 — Final Grade Prediction (UCI) ✅
+### Module 2 — Final Grade Prediction (UCI) 
 Regression on G3 (final grade, 0-20), deliberately **excluding G1/G2** as predictors (and excluding any Phase-3 feature derived from G3) to keep this a genuine early-warning problem rather than a near-tautological one.
 
 | Model | MAE | RMSE | R² |
@@ -246,7 +226,7 @@ Regression on G3 (final grade, 0-20), deliberately **excluding G1/G2** as predic
 | Random Forest | 2.63 | 3.74 | 0.097 |
 | XGBoost | 2.66 | 3.74 | 0.096 |
 
-### Module 3 — Student Segmentation (OULAD) ✅
+### Module 3 — Student Segmentation (OULAD) 
 K-Means (k=3, chosen via elbow + silhouette analysis across k=2-8) into **At Risk / Average / High Performer**, with cluster identity assigned post-hoc by ranking centroids on mean Academic Health Score (never fit on the label).
 
 - Segment sizes: High Performer 17,362 · Average 11,865 · At Risk 3,366
@@ -281,11 +261,7 @@ Multiple rules can fire for the same student; recommendations are ranked by how 
 
 ---
 
-## Backend API
 
-Will be documented in full with request/response examples once Phase 7 lands. Planned stack: FastAPI + Pydantic schemas for validation, Uvicorn for serving, with the same `src/` modules used by both the API and the dashboard (no logic duplication).
-
----
 
 ## Database
 
@@ -331,7 +307,7 @@ CREATE TABLE recommendations (
 
 ## Dashboard
 
-Streamlit multi-page app (Home, Dataset Analytics, Risk Prediction, Grade Prediction, Student Clusters, Explainable AI, Recommendations, Admin Panel) — full build documented once Phase 9 lands.
+Streamlit multi-page app (Home, Dataset Analytics, Risk Prediction, Grade Prediction, Student Clusters, Explainable AI, Recommendations, Admin Panel) — full build documented.
 
 ---
 
@@ -352,22 +328,6 @@ data/raw/oulad/  # studentInfo.csv, studentRegistration.csv, studentAssessment.c
 data/raw/uci/    # student-mat.csv, student-por.csv
 ```
 
-## Usage
-
-```bash
-# Phase 2 — clean raw data
-python -m src.preprocessing.run_preprocessing
-
-# Phase 3 — build engineered features
-python -m src.feature_engineering.run_feature_engineering
-
-# Phase 4 — train and evaluate all models
-python -m src.models.run_modeling
-
-# Phase 5+ — explainability, recommendations, API, dashboard
-# (commands added as each phase lands)
-```
-
 ## Testing
 
 ```bash
@@ -386,15 +346,15 @@ EduRadar/
 │   └── external/
 ├── notebooks/                    # exploration only — no production logic
 ├── src/
-│   ├── preprocessing/            # Phase 2
-│   ├── feature_engineering/      # Phase 3
-│   ├── models/                   # Phase 4
-│   ├── explainability/           # Phase 5
-│   ├── recommendation/           # Phase 6
+│   ├── preprocessing/           
+│   ├── feature_engineering/      
+│   ├── models/                   
+│   ├── explainability/           
+│   ├── recommendation/          
 │   └── utils/                    # config, logging
-├── api/                          # Phase 7
-├── dashboard/                    # Phase 9
-├── database/                     # Phase 8
+├── api/                         
+├── dashboard/                   
+├── database/                   
 ├── tests/                        # mirrors src/ structure
 ├── models/                       # serialized model artifacts (git-ignored)
 ├── docs/                         # diagrams, manuals, plots
@@ -402,26 +362,3 @@ EduRadar/
 ├── .gitignore
 └── main.py
 ```
-
-## Key Design Decisions & Interview Talking Points
-
-- **Why two separate pipelines instead of merging datasets?** Different student populations, granularities, and targets — merging by row would create fake associations. A shared *feature schema*, not a shared *raw table*, is the right level of abstraction.
-- **Why label some features as "proxies"?** UCI has no clickstream data; presenting its survey-based Engagement Score as equivalent to OULAD's behavioral one would overstate confidence. Naming the weakest links explicitly is more defensible than hiding them.
-- **Why exclude G1/G2 from grade prediction?** Including them is trivially predictive (R² > 0.8 in published work) but useless for an *early*-warning system, since they only exist mid-course.
-- **Why was target leakage in engineered features specifically checked?** `quiz_performance_trend`, `study_efficiency`, and `academic_health_score` for UCI are all built from G3 — using them to predict G3 would be circular. Caught and excluded, with a regression test guarding against it being silently reintroduced.
-- **Why SMOTE inside a Pipeline, not applied upfront?** `imblearn.Pipeline` only resamples during `.fit()`, never during `.predict()` — guaranteeing synthetic samples never touch the test set.
-- **Why SHAP's TreeExplainer specifically?** Exact (not approximate) SHAP values for tree ensembles, computed in polynomial time via the tree structure — no reason to use the slower, model-agnostic KernelExplainer when the model is already a tree ensemble.
-
-## Roadmap
-
-- [x] Phase 1 — Setup & architecture
-- [x] Phase 2 — Preprocessing
-- [x] Phase 3 — Feature engineering
-- [x] Phase 4 — Machine learning
-- [ ] Phase 5 — Explainable AI (SHAP)
-- [ ] Phase 6 — Recommendation engine
-- [ ] Phase 7 — Backend API
-- [ ] Phase 8 — Database
-- [ ] Phase 9 — Dashboard
-- [ ] Phase 10 — Full documentation & diagrams
-- [ ] Phase 11 — GitHub packaging

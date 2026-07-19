@@ -311,37 +311,6 @@ Streamlit multi-page app (Home, Dataset Analytics, Risk Prediction, Grade Predic
 
 ```bash
 git clone <repo-url>
-cd EduRadar
-python -m venv venv
-source venv/bin/activate        # Windows: venv\Scripts\activate
-pip install -r requirements.txt
-```
-
-Place raw data files (not committed to git) here:
-```
-data/raw/oulad/  # studentInfo.csv, studentRegistration.csv, studentAssessment.csv,
-                 # assessments.csv, vle.csv, studentVle.csv, courses.csv
-data/raw/uci/    # student-mat.csv, student-por.csv
-```
-
-## Testing
-
-```bash
-python -m pytest -m "not slow" -v      # fast unit tests
-python -m pytest -m slow -v            # full integration tests against real data
-python -m pytest --cov=src             # coverage report
-```
-
-## Dashboard
-
-Streamlit multi-page app (Home, Dataset Analytics, Risk Prediction, Grade Prediction, Student Clusters, Explainable AI, Recommendations, Admin Panel) — full build documented.
-
----
-
-## Installation
-
-```bash
-git clone <repo-url>
 cd CogniMap
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
@@ -389,49 +358,4 @@ CogniMap/
 ├── .gitignore
 └── main.py
 ```
-/
-├── data/
-│   ├── raw/{oulad,uci}/          # untouched source files (git-ignored)
-│   ├── processed/{oulad,uci,features}/   # cleaned + engineered parquet files
-│   └── external/
-├── notebooks/                    # exploration only — no production logic
-├── src/
-│   ├── preprocessing/           
-│   ├── feature_engineering/      
-│   ├── models/                   
-│   ├── explainability/           
-│   ├── recommendation/          
-│   └── utils/                    # config, logging
-├── api/                         
-├── dashboard/                   
-├── database/                   
-├── tests/                        # mirrors src/ structure
-├── models/                       # serialized model artifacts (git-ignored)
-├── docs/                         # diagrams, manuals, plots
-├── requirements.txt
-├── .gitignore
-└── main.py
-```
-/
-├── data/
-│   ├── raw/{oulad,uci}/          # untouched source files (git-ignored)
-│   ├── processed/{oulad,uci,features}/   # cleaned + engineered parquet files
-│   └── external/
-├── notebooks/                    # exploration only — no production logic
-├── src/
-│   ├── preprocessing/           
-│   ├── feature_engineering/      
-│   ├── models/                   
-│   ├── explainability/           
-│   ├── recommendation/          
-│   └── utils/                    # config, logging
-├── api/                         
-├── dashboard/                   
-├── database/                   
-├── tests/                        # mirrors src/ structure
-├── models/                       # serialized model artifacts (git-ignored)
-├── docs/                         # diagrams, manuals, plots
-├── requirements.txt
-├── .gitignore
-└── main.py
-```
+

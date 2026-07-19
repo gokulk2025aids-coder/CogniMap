@@ -332,44 +332,6 @@ python -m pytest -m slow -v            # full integration tests against real dat
 python -m pytest --cov=src             # coverage report
 ```
 
-## Project Structure
-
-```
-- 'oulad' or 'uci'
-    features_json TEXT,                  -- engineered feature snapshot
-    created_at    TIMESTAMP
-);
-
-CREATE TABLE predictions (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_key   VARCHAR REFERENCES students(student_key),
-    prediction_type VARCHAR,             -- 'risk' | 'grade' | 'cluster'
-    prediction_value VARCHAR,
-    model_name    VARCHAR,
-    model_version VARCHAR,
-    predicted_at  TIMESTAMP
-);
-
-CREATE TABLE shap_explanations (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_key   VARCHAR REFERENCES students(student_key),
-    feature_name  VARCHAR,
-    shap_value    FLOAT,
-    raw_value     FLOAT
-);
-
-CREATE TABLE recommendations (
-    id            INTEGER PRIMARY KEY AUTOINCREMENT,
-    student_key   VARCHAR REFERENCES students(student_key),
-    recommendation TEXT,
-    triggering_feature VARCHAR,
-    priority      INTEGER,
-    generated_at  TIMESTAMP
-);
-```
-
----
-
 ## Dashboard
 
 Streamlit multi-page app (Home, Dataset Analytics, Risk Prediction, Grade Prediction, Student Clusters, Explainable AI, Recommendations, Admin Panel) — full build documented.
